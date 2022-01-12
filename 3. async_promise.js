@@ -17,7 +17,16 @@ db.once('open', () => {
         ...user
       }).then((user) => {
         // 對每個user建立相對應餐廳資料
-        return RestaurantModel.create(restaurants)
+        restaurantArray = []
+        restaurants.forEach((item, index) => {
+          if (index >= user_index * 3 && index < (user_index + 1) * 3) {
+            item.userId = user._id
+            console.log(`前置餐廳${index}已經成功置入使用者${user_index}`)
+            restaurantArray.push(item)
+          }
+        })
+
+        return RestaurantModel.create(restaurantArray)
       }).then(() => {
         resolve()
       }).catch(error => {
